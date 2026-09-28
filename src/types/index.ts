@@ -5,9 +5,11 @@ export type LineHeight = 'normal' | 'relaxed' | 'loose';
 
 export type StoryCategory = 
   | 'Semua'
+  | 'Edukasi & Rangkuman'
+  | 'Teknologi & Bisnis'
   | 'Inspirasi'
-  | 'Petualangan'
   | 'Filosofis'
+  | 'Petualangan'
   | 'Fabel & Dongeng'
   | 'Sains & Alam'
   | 'Refleksi';
@@ -38,8 +40,12 @@ export interface Story {
   difficulty: 'Mudah' | 'Menengah' | 'Mendalam';
   summary: string;
   moralLesson?: string;
+  attribution?: string; // Etika sumber materi & atribusi hak cipta (mis. "Rangkuman Belajar Pribadi - Modul RevoU")
   chapters: StoryChapter[];
   reflections: ReflectionQuestion[];
+  isCustom?: boolean; // Penanda bacaan kustom buatan pengguna
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SavedQuote {

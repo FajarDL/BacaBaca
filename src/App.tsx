@@ -5,7 +5,8 @@ import { StoryLibrary } from './components/library/StoryLibrary';
 import { ZenReader } from './components/reader/ZenReader';
 import { StatsModal } from './components/stats/StatsModal';
 import { QuotesGalleryModal } from './components/quotes/QuotesGalleryModal';
-import { INITIAL_STORIES } from './data/stories';
+import { StoryEditorModal } from './components/manage/StoryEditorModal';
+import { DeleteConfirmModal } from './components/manage/DeleteConfirmModal';
 import type { Story, AmbientSoundType } from './types';
 import { useReadingStorage } from './hooks/useReadingStorage';
 import { useAmbientSound } from './hooks/useAmbientSound';
@@ -16,11 +17,24 @@ export function App() {
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
   const [isQuotesOpen, setIsQuotesOpen] = useState<boolean>(false);
 
+  // CRUD State
+  const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
+  const [storyToEdit, setStoryToEdit] = useState<Story | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [storyToDelete, setStoryToDelete] = useState<Story | null>(null);
+
   // Storage & Profile Hook
   const {
+    stories,
     stats,
     preferences,
     setPreferences,
+    addStory,
+    updateStory,
+    deleteStory,
+    resetStoriesToDefault,
+    exportDataAsJSON,
+    importDataFromJSON,
     recordReadingSession,
     completeStory,
     saveQuote,
@@ -51,6 +65,46 @@ export function App() {
   const handleBackToLibrary = () => {
     setActiveStory(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // CRUD Handlers
+  const handleAddNewStory = () => {
+    setStoryToEdit(null);
+    setIsEditorOpen(true);
+  };
+
+  const handleEditStory = (story: Story) => {
+    setStoryToEdit(story);
+    setIsEditorOpen(true);
+  };
+
+  const handleSaveStory = (storyData: Omit<Story, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (storyToEdit) {
+      updateStory(storyToEdit.id, storyData);
+      if (activeStory && activeStory.id === storyToEdit.id) {
+        setActiveStory(prev => prev ? { ...prev, ...storyData } : null);
+      }
+    } else {
+      const newStory = addStory(storyData);
+      // Auto open reader for newly created story if desired
+      setActiveStory(newStory);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleDeleteRequest = (story: Story) => {
+    setStoryToDelete(story);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (storyToDelete) {
+      deleteStory(storyToDelete.id);
+      if (activeStory && activeStory.id === storyToDelete.id) {
+        setActiveStory(null);
+      }
+      setStoryToDelete(null);
+    }
   };
 
   return (
@@ -95,13 +149,20 @@ export function App() {
             onRecordTime={(mins) => recordReadingSession(mins)}
             onFontFamilyChange={(font) => setPreferences(prev => ({ ...prev, fontFamily: font }))}
             onFontSizeChange={(size) => setPreferences(prev => ({ ...prev, fontSize: size }))}
+            onEditCurrentStory={handleEditStory}
           />
         ) : (
           <StoryLibrary
-            stories={INITIAL_STORIES}
+            stories={stories}
             completedStoryIds={stats.completedStoryIds}
             onSelectStory={handleOpenStory}
             onOpenStats={() => setIsStatsOpen(true)}
+            onAddNewStory={handleAddNewStory}
+            onEditStory={handleEditStory}
+            onDeleteStory={handleDeleteRequest}
+            onExportData={exportDataAsJSON}
+            onImportData={importDataFromJSON}
+            onResetToDefault={resetStoriesToDefault}
           />
         )}
       </div>
@@ -119,6 +180,28 @@ export function App() {
         onClose={() => setIsQuotesOpen(false)}
         quotes={stats.savedQuotes}
         onRemoveQuote={removeQuote}
+      />
+
+      {/* Story Create & Edit Modal */}
+      <StoryEditorModal
+        isOpen={isEditorOpen}
+        onClose={() => {
+          setIsEditorOpen(false);
+          setStoryToEdit(null);
+        }}
+        storyToEdit={storyToEdit}
+        onSaveStory={handleSaveStory}
+      />
+
+      {/* Safe Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setStoryToDelete(null);
+        }}
+        storyTitle={storyToDelete?.title || ''}
+        onConfirmDelete={handleConfirmDelete}
       />
 
     </div>

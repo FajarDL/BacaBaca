@@ -6,7 +6,8 @@ import {
   Play, 
   Sliders, 
   BookmarkPlus, 
-  Clock
+  Clock,
+  Edit3
 } from 'lucide-react';
 import type { Story, FontFamily, FontSize } from '../../types';
 import { useSpeech } from '../../hooks/useSpeech';
@@ -25,6 +26,7 @@ interface ZenReaderProps {
   onRecordTime: (minutes: number) => void;
   onFontFamilyChange: (font: FontFamily) => void;
   onFontSizeChange: (size: FontSize) => void;
+  onEditCurrentStory?: (story: Story) => void;
 }
 
 export const ZenReader: React.FC<ZenReaderProps> = ({
@@ -37,7 +39,8 @@ export const ZenReader: React.FC<ZenReaderProps> = ({
   onSaveQuote,
   onRecordTime,
   onFontFamilyChange,
-  onFontSizeChange
+  onFontSizeChange,
+  onEditCurrentStory
 }) => {
   const [showControls, setShowControls] = useState<boolean>(false);
   const [showFocusRuler, setShowFocusRuler] = useState<boolean>(false);
@@ -254,6 +257,22 @@ export const ZenReader: React.FC<ZenReaderProps> = ({
               </button>
             )}
 
+            {/* Edit Current Story Button */}
+            {onEditCurrentStory && (
+              <button
+                onClick={() => onEditCurrentStory(story)}
+                title="Edit Catatan / Bacaan Ini"
+                className="p-2 rounded-xl border text-xs hover:bg-black/5 transition-colors"
+                style={{
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+            )}
+
             {/* Reader Comfort Settings */}
             <button
               onClick={() => setShowControls(prev => !prev)}
@@ -305,6 +324,12 @@ export const ZenReader: React.FC<ZenReaderProps> = ({
             style={{ color: 'var(--text-secondary)' }}>
             Ditulis oleh <span className="font-semibold">{story.author}</span> • {story.summary}
           </p>
+
+          {story.attribution && (
+            <div className="mt-2 text-xs italic text-amber-700/80 font-medium">
+              🛡️ {story.attribution}
+            </div>
+          )}
 
           <div className="mt-4 flex items-center justify-center gap-2 text-xs">
             <span className="px-3 py-1 rounded-full border font-medium"

@@ -294,6 +294,64 @@ export const INITIAL_STORIES: Story[] = [
         thoughtPrompt: 'Apa kegiatan yang membuat Anda merasa waktu berjalan lambat dan penuh kedamaian?'
       }
     ]
+  },
+  {
+    id: 'rangkuman-revou-product-mindset',
+    title: 'Rangkuman Belajar: Membangun Solusi yang Dicintai Pengguna',
+    author: 'Catatan Belajar RevoU',
+    coverEmoji: '🚀',
+    coverGradient: 'from-blue-600 to-indigo-800',
+    category: 'Edukasi & Rangkuman',
+    readingTimeMinutes: 4,
+    difficulty: 'Menengah',
+    summary: 'Sintesis pemahaman mandiri tentang problem framing, data-driven vs data-informed, dan seni melakukan eksperimen cepat tanpa berasumsi.',
+    moralLesson: 'Solusi terbaik tidak lahir dari kecanggihan fitur semata, melainkan dari kedalaman empati kita dalam memahami keresahan nyata pengguna.',
+    attribution: 'Catatan Belajar Pribadi • Terinspirasi dari Kerangka Kerja Problem Solving & Product Management',
+    isCustom: false,
+    chapters: [
+      {
+        id: 'c1',
+        title: 'Jatuh Cinta pada Masalah, Bukan Solusinya',
+        paragraphs: [
+          'Dalam dunia pengembangan produk dan strategi digital, kesalahan paling umum pemula adalah melompat terlalu cepat ke solusi. Sering kali kita membuat aplikasi atau rencana bisnis yang rumit sebelum benar-benar membuktikan apakah ada orang yang membutuhkan hal tersebut.',
+          'Prinsip utama yang perlu ditanamkan adalah "Fall in love with the problem, not your solution". Sebelum menulis sebaris kode atau merancang materi presentasi, pastikan kita memahami "Who is the user?", "What is their pain point?", dan "Why does this problem matter now?".',
+          'Wawancara pengguna yang berkualitas bukanlah menanyakan "Apakah kamu suka ide saya?", melainkan menggali perilaku nyata mereka di masa lalu: "Bagaimana cara Anda menyelesaikan masalah ini kemarin?". Tindakan masa lalu jauh lebih jujur daripada janji masa depan.'
+        ]
+      },
+      {
+        id: 'c2',
+        title: 'Data Sebagai Kompas, Intuisi Sebagai Pengemudi',
+        paragraphs: [
+          'Banyak yang mengira bahwa menjadi seorang profesional berarti harus 100% data-driven. Namun, ada perbedaan halus namun krusial antara "Data-Driven" dan "Data-Informed".',
+          'Data-driven murni melihat angka apa adanya tanpa konteks manusiawi. Ini bisa berbahaya karena angka hanya memberitahu "Apa yang terjadi" (What), tetapi tidak selalu menjelaskan "Mengapa itu terjadi" (Why).',
+          'Sebagai pembelajar yang bijak, pendekatan data-informed menggabungkan metrik kuantitatif dengan riset kualitatif, etika bisnis, dan empati pengguna. Angka menjadi kompas penunjuk arah, namun pertimbangan manusialah yang memutuskan rute jalan yang bermartabat.'
+        ]
+      },
+      {
+        id: 'c3',
+        title: 'Eksperimen Cepat dan Refleksi Berkelanjutan',
+        paragraphs: [
+          'Belajar bukan sekadar menghafal modul atau mencatat istilah asing. Nilai sejati dari ilmu adalah saat ia diuji dalam siklus: Bangun (Build), Ukur (Measure), dan Pelajari (Learn).',
+          'Buatlah eksperimen terkecil yang bisa memvalidasi hipotesis Anda. Jika hasil belum sesuai harapan, itu bukan kegagalan diri, melainkan data baru yang menyingkap kebenaran.',
+          'Dengan merangkum materi secara berkala dan membacanya kembali dengan tenang di BacaBaca, konsep-konsep abstrak akan mengendap menjadi intuisi praktis yang siap digunakan di dunia kerja nyata.'
+        ]
+      }
+    ],
+    reflections: [
+      {
+        id: 'q1',
+        question: 'Mengapa pendekatan "Data-Informed" sering kali lebih holistik daripada sekadar "Data-Driven" murni?',
+        options: [
+          'Karena data-informed sama sekali tidak memerlukan metrik angka kuantitatif.',
+          'Karena data-informed memadukan data kuantitatif dengan empati konteks kualitatif dan etika manusiawi.',
+          'Karena data-driven membutuhkan biaya server yang terlalu mahal.',
+          'Karena data kualitatif selalu lebih akurat daripada data kuantitatif.'
+        ],
+        correctIndex: 1,
+        explanation: 'Data-informed menyadari keterbatasan angka kuantitatif dan melengkapinya dengan pemahaman mendalam tentang motif, etika, dan konteks pengguna.',
+        thoughtPrompt: 'Bagaimana Anda biasanya mengambil keputusan penting: lebih mengandalkan data, intuisi, atau perpaduan keduanya?'
+      }
+    ]
   }
 ];
 
@@ -331,6 +389,13 @@ export const INITIAL_BADGES = [
     title: 'Penjelajah Kisah',
     description: 'Membaca cerita dari minimal 3 kategori berbeda.',
     icon: '🧭',
+    unlocked: false
+  },
+  {
+    id: 'active-writer',
+    title: 'Pena Pembelajar',
+    description: 'Membuat atau merangkum bacaan belajar sendiri di BacaBaca.',
+    icon: '✍️',
     unlocked: false
   }
 ];

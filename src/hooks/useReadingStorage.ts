@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import type { UserStats, SavedQuote, ThemeMode, FontFamily, FontSize } from '../types';
-import { INITIAL_BADGES } from '../data/stories';
+import type { UserStats, SavedQuote, ThemeMode, FontFamily, FontSize, Story } from '../types';
+import { INITIAL_STORIES, INITIAL_BADGES } from '../data/stories';
 
 const STATS_STORAGE_KEY = 'bacabaca_user_stats_v1';
 const PREFS_STORAGE_KEY = 'bacabaca_user_prefs_v1';
+const STORIES_STORAGE_KEY = 'bacabaca_stories_v1';
 
 const DEFAULT_STATS: UserStats = {
   streakDays: 1,
@@ -31,6 +32,22 @@ const DEFAULT_PREFERENCES: UserPreferences = {
 };
 
 export function useReadingStorage() {
+  // Stories State with LocalStorage persistence
+  const [stories, setStories] = useState<Story[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORIES_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.error('Error loading stories from localStorage', e);
+    }
+    return INITIAL_STORIES;
+  });
+
   const [stats, setStats] = useState<UserStats>(() => {
     try {
       const stored = localStorage.getItem(STATS_STORAGE_KEY);
@@ -54,6 +71,15 @@ export function useReadingStorage() {
     }
     return DEFAULT_PREFERENCES;
   });
+
+  // Sync stories to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORIES_STORAGE_KEY, JSON.stringify(stories));
+    } catch (e) {
+      console.error('Error saving stories to localStorage', e);
+    }
+  }, [stories]);
 
   // Sync stats to localStorage
   useEffect(() => {
@@ -86,6 +112,102 @@ export function useReadingStorage() {
       // ignore
     }
   }, []);
+
+  // CRUD Operations on Stories
+  const addStory = useCallback((newStoryData: Omit<Story, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    const id = 'story_' + Date.now();
+    const newStory: Story = {
+      ...newStoryData,
+      id,
+      isCustom: true,
+      createdAt: today,
+      updatedAt: today
+    };
+
+    setStories(prev => [newStory, ...prev]);
+
+    // Give bonus XP & unlock 'active-writer' badge
+    setStats(prev => {
+      const updatedBadges = prev.badges.map(b => {
+        if (b.id === 'active-writer' && !b.unlocked) {
+          triggerConfetti();
+          return { ...b, unlocked: true, unlockedAt: today };
+        }
+        return b;
+      });
+      return {
+        ...prev,
+        currentXP: prev.currentXP + 60,
+        badges: updatedBadges
+      };
+    });
+
+    triggerConfetti();
+    return newStory;
+  }, [triggerConfetti]);
+
+  const updateStory = useCallback((storyId: string, updatedFields: Partial<Story>) => {
+    const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    setStories(prev => prev.map(story => {
+      if (story.id === storyId) {
+        return {
+          ...story,
+          ...updatedFields,
+          updatedAt: today
+        };
+      }
+      return story;
+    }));
+  }, []);
+
+  const deleteStory = useCallback((storyId: string) => {
+    setStories(prev => prev.filter(story => story.id !== storyId));
+    // Also remove from completed list if present
+    setStats(prev => ({
+      ...prev,
+      completedStoryIds: prev.completedStoryIds.filter(id => id !== storyId)
+    }));
+  }, []);
+
+  const resetStoriesToDefault = useCallback(() => {
+    setStories(INITIAL_STORIES);
+  }, []);
+
+  // Export Data (JSON) for full user ownership & offline backup
+  const exportDataAsJSON = useCallback(() => {
+    const backupData = {
+      version: '1.0',
+      exportedAt: new Date().toISOString(),
+      stories,
+      stats,
+      preferences
+    };
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `BacaBaca_Backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [stories, stats, preferences]);
+
+  // Import Data (JSON)
+  const importDataFromJSON = useCallback((jsonString: string): boolean => {
+    try {
+      const data = JSON.parse(jsonString);
+      if (data && Array.isArray(data.stories)) {
+        setStories(data.stories);
+        if (data.stats) setStats(data.stats);
+        if (data.preferences) setPreferences(data.preferences);
+        triggerConfetti();
+        return true;
+      }
+    } catch (e) {
+      console.error('Failed to import JSON data', e);
+    }
+    return false;
+  }, [triggerConfetti]);
 
   // Update Reading Streak
   const recordReadingSession = useCallback((minutes: number) => {
@@ -214,9 +336,16 @@ export function useReadingStorage() {
   }, [triggerConfetti]);
 
   return {
+    stories,
     stats,
     preferences,
     setPreferences,
+    addStory,
+    updateStory,
+    deleteStory,
+    resetStoriesToDefault,
+    exportDataAsJSON,
+    importDataFromJSON,
     recordReadingSession,
     completeStory,
     saveQuote,
