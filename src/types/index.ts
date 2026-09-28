@@ -5,12 +5,11 @@ export type LineHeight = 'normal' | 'relaxed' | 'loose';
 
 export type StoryCategory = 
   | 'Semua'
-  | 'Edukasi & Rangkuman'
-  | 'Teknologi & Bisnis'
+  | 'Rangkuman & Modul'
+  | 'Data & Tech'
+  | 'Digital Marketing'
+  | 'Filosofis & Esai'
   | 'Inspirasi'
-  | 'Filosofis'
-  | 'Petualangan'
-  | 'Fabel & Dongeng'
   | 'Sains & Alam'
   | 'Refleksi';
 
@@ -24,7 +23,7 @@ export interface ReflectionQuestion {
   id: string;
   question: string;
   options: string[];
-  correctIndex?: number; // optional, can be an open reflection or a fun comprehension quiz
+  correctIndex?: number;
   explanation: string;
   thoughtPrompt?: string;
 }
@@ -40,7 +39,7 @@ export interface Story {
   difficulty: 'Mudah' | 'Menengah' | 'Mendalam';
   summary: string;
   moralLesson?: string;
-  attribution?: string; // Etika sumber materi & atribusi hak cipta (mis. "Rangkuman Belajar Pribadi - Modul RevoU")
+  attribution?: string; // Etika sumber materi & atribusi hak cipta (mis. "Catatan Belajar Pribadi • Webinar RevoU")
   chapters: StoryChapter[];
   reflections: ReflectionQuestion[];
   isCustom?: boolean; // Penanda bacaan kustom buatan pengguna

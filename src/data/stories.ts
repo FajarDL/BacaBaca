@@ -2,16 +2,169 @@ import type { Story } from '../types';
 
 export const INITIAL_STORIES: Story[] = [
   {
+    id: 'revou-dmmc-karir-digital-marketing-era-ai',
+    title: 'RevoU DMMC: Karir Digital Marketing di Era AI',
+    author: 'Ega Adi Surya & Gia Adhika Putra (Rangkuman Mandiri)',
+    coverEmoji: '🎯',
+    coverGradient: 'from-amber-600 to-orange-800',
+    category: 'Digital Marketing',
+    readingTimeMinutes: 5,
+    difficulty: 'Menengah',
+    summary: 'Rangkuman lengkap webinar RevoU: Mengapa AI tidak menggantikan marketer melainkan merevolusi peran, 5 skill tak tergantikan, konsep T-Shaped Marketer, hingga tips portofolio.',
+    moralLesson: 'Jadikan AI sebagai Copilot (asisten pembantu), bukan Autopilot. Manusia tetaplah kapten yang memegang arah, strategi, dan empati brand.',
+    attribution: 'Rangkuman Webinar RevoU Digital Marketing Mini Course (DMMC) Day 1 • Disarikan untuk Pembelajaran Mandiri',
+    chapters: [
+      {
+        id: 'c1',
+        title: '1. Paradigma Baru: AI Tidak Menggantikan, Melainkan Merevolusi Marketer',
+        paragraphs: [
+          '"AI is not here to replace you, but to revolutionize your role." Pandangan bahwa AI akan memusnahkan profesi pemasar adalah kekeliruan. Sebaliknya, AI menggeser pekerjaan dari yang semula repetitif dan klerikal menjadi jauh lebih kolaboratif dan berorientasi strategis.',
+          'Riset McKinsey menunjukkan bahwa 30% pekerjaan repetitif marketing kini berpotensi diotomatisasi oleh AI. Laporan LinkedIn Job Report juga mencatat lonjakan permintaan sebesar 67% dalam dua tahun terakhir untuk posisi AI-Augmented Marketer—yaitu pemasar yang mahir berkolaborasi dengan kecerdasan buatan.',
+          'Dampaknya sangat positif bagi para praktisi: marketer kini memiliki waktu luang yang jauh lebih banyak untuk memahami psikologi pelanggan, mengeksplorasi ide kreatif orisinal, serta merancang kampanye berdampak tinggi terhadap laba bisnis (Return on Investment).'
+        ]
+      },
+      {
+        id: 'c2',
+        title: '2. Pembagian Peran: Mesin (AI) vs Manusia',
+        paragraphs: [
+          'Tugas yang sangat efisien dikerjakan oleh AI meliputi: drafting teks konten dan copywriting, pembuatan variasi caption, pelaksanaan A/B testing multi-varian, otomasi laporan performa rutin, serta optimasi penargetan iklan berbasis algoritma mesin.',
+          'Namun, aspek yang tetap mutlak membutuhkan peran manusia adalah: menentukan arah dan nuansa brand (tone of voice), merancang strategi corong pemasaran (marketing funnel) dari tahap awareness hingga conversion, serta melakukan interpretasi kontekstual saat data lapangan tidak lengkap.',
+          'AI tidak memiliki empati, etika, dan relasi emosional antar manusia. Oleh karena itu, prinsip emas yang harus dipegang adalah: jadikan AI sebagai Copilot (asisten), bukan Autopilot. Kapten yang memegang kendali keputusan bisnis tetaplah manusia.'
+        ]
+      },
+      {
+        id: 'c3',
+        title: '3. 5 Keterampilan Kunci yang Tak Tergantikan AI',
+        paragraphs: [
+          'Keterampilan pertama adalah Strategic Thinking: kemampuan menyelaraskan kampanye dengan tujuan bisnis jangka panjang, memetakan audiens sasaran, dan menetapkan skala prioritas saat anggaran terbatas.',
+          'Keterampilan kedua adalah Analisis & Interpretasi Data: memahami metrik kunci seperti CAC (Customer Acquisition Cost), LTV (Customer Lifetime Value), ROAS, CTR, Conversion Rate, serta Retention Rate.',
+          'Keterampilan ketiga dan keempat adalah Budget Management (pengelolaan alokasi dana promosi secara terukur agar tidak boros) dan Partnership Management (memilih influencer atau kreator yang selaras dengan nilai merek, bukan sekadar melihat jumlah pengikut).',
+          'Keterampilan kelima adalah Literasi AI (AI Literacy): seni merumuskan prompt berbobot konseptual, memvalidasi hasil secara kritis terhadap halusinasi AI, dan mengintegrasikan AI secara etis ke alur kerja perusahaan.'
+        ]
+      },
+      {
+        id: 'c4',
+        title: '4. Konsep T-Shaped Marketer & Tools Wajib',
+        paragraphs: [
+          'Marketer masa depan yang paling diminati adalah mereka yang bertipe "T-Shaped": memiliki wawasan horizontal yang luas tentang seluruh spektrum pemasaran digital (SEO, Ads, CRM, Konten), namun memiliki satu keahlian vertikal yang sangat mendalam pada spesialisasi tertentu.',
+          'Jalur spesialisasi mencakup: Performance Marketer (iklan berbayar berorientasi konversi), SEO/SEM Specialist (optimasi mesin pencari), Social Media Marketer (keterikatan audiens organik), serta CRM/Lifecycle Marketer (retensi pelanggan dan kampanye email/notifikasi).',
+          'Menariknya, tool nomor satu yang paling mutlak dikuasai untuk semua jalur bukanlah tool canggih berbayar, melainkan Spreadsheet (Microsoft Excel / Google Sheets) sebagai fondasi analisis data, baru kemudian dilengkapi tool AI seperti ChatGPT, Claude, GA4, dan platform periklanan.'
+        ]
+      },
+      {
+        id: 'c5',
+        title: '5. Strategi Portofolio & Pembelajaran Aksi',
+        paragraphs: [
+          'Portofolio yang memikat rekruter bukan sekadar kumpulan tautan postingan media sosial, melainkan dokumentasi studi kasus nyata: apa masalah bisnis yang dihadapi, strategi apa yang diterapkan, apa tantangannya, serta bagaimana metrik hasil akhirnya.',
+          'Sertakan juga dokumentasi eksperimen pemanfaatan AI dalam alur kerja Anda untuk membuktikan efisiensi waktu yang berhasil dicapai.',
+          'Masa depan pemasaran digital sangat cerah bagi siapa pun yang bersedia terus belajar, memadukan kecerdasan teknologi dengan kedalaman empati manusia.'
+        ]
+      }
+    ],
+    reflections: [
+      {
+        id: 'q1',
+        question: 'Apa arti filosofi "AI sebagai Copilot, bukan Autopilot" dalam digital marketing?',
+        options: [
+          'AI harus dibiarkan menjalankan seluruh bisnis secara otomatis tanpa campur tangan manusia.',
+          'AI bertindak sebagai asisten pembantu efisiensi, namun strategi, empati, dan kendali keputusan tetap di tangan manusia.',
+          'Marketer tidak boleh menggunakan AI sama sekali.',
+          'AI hanya boleh digunakan untuk membuat gambar, bukan untuk teks.'
+        ],
+        correctIndex: 1,
+        explanation: 'AI membantu mempercepat pekerjaan teknis dan variasi ide, namun intuisi bisnis, pemahaman etika, dan arah nilai brand tetap membutuhkan kebijaksanaan manusia.',
+        thoughtPrompt: 'Bagian mana dari pekerjaan Anda yang paling siap dibantu oleh AI sebagai copilot?'
+      }
+    ]
+  },
+  {
+    id: 'revou-damc-mengawali-karir-data-analytics',
+    title: 'RevoU DAMC: Mengawali Karir Data Analytics di Era AI',
+    author: 'Vanessa Geraldine & Ega Adi Surya (Rangkuman Mandiri)',
+    coverEmoji: '📊',
+    coverGradient: 'from-blue-700 to-indigo-900',
+    category: 'Data & Tech',
+    readingTimeMinutes: 5,
+    difficulty: 'Menengah',
+    summary: 'Rangkuman webinar RevoU: Peran Data Analyst sebagai jembatan bisnis, ledakan Big Data 2026, 4 tingkat analisis, lompatan workflow bersama AI, mitos vs fakta, dan jalur switch career.',
+    moralLesson: 'Winning Junior Analyst = Data Thinking + Leveraging AI Tools + Business Judgement. Kunci keberhasilan bukan pada hafalan rumus, melainkan ketajaman membingkai masalah bisnis.',
+    attribution: 'Rangkuman Webinar RevoU Data Analytics Mini Course (DAMC) Day 1 • Disarikan untuk Pembelajaran Mandiri',
+    chapters: [
+      {
+        id: 'c1',
+        title: '1. Peran Fundamental Data Analyst: Sebagai "Jembatan" Bisnis',
+        paragraphs: [
+          'Banyak yang mengira pekerjaan analis data hanya berputar di depan barisan angka yang dingin. Kenyataannya, peran fundamental seorang Data Analyst adalah bertindak sebagai jembatan penghubung antara data mentah (raw data) yang berantakan dengan kebutuhan keputusan bisnis (business questions & decisions).',
+          'Perusahaan modern memiliki miliaran catatan transaksi, log aktivitas aplikasi, dan data pelanggan. Namun, seluruh tumpukan data tersebut tidak bernilai sama sekali jika tidak diolah menjadi rekomendasi aksi nyata (actionable insights) yang meningkatkan pendapatan atau memangkas pemborosan.'
+        ]
+      },
+      {
+        id: 'c2',
+        title: '2. Ledakan Big Data 2026 & Karakteristik 3V',
+        paragraphs: [
+          'Pada tahun 2026, volume data global diperkirakan menembus angka spektakuler 221 Zettabytes (di mana 1 Zettabyte setara dengan 1 triliun Gigabytes).',
+          'Fenomena ini didefinisikan oleh karakteristik 3V: Volume (ukuran data yang terlampau raksasa sehingga spreadsheet biasa akan mengalami crash), Velocity (kecepatan masuknya data secara real-time seperti jutaan transaksi pembayaran detik demi detik), dan Variety (ragam bentuk data dari angka terstruktur, teks ulasan, hingga rekaman audio/gambar).',
+          'Pertanyaan industri hari ini bukan lagi "Apakah kita memiliki data?", melainkan "Siapa talenta yang mampu memahami data tersebut dan mengubahnya menjadi keputusan strategis?".'
+        ]
+      },
+      {
+        id: 'c3',
+        title: '3. 4 Tingkatan Analisis Data',
+        paragraphs: [
+          'Analisis data terbagi ke dalam 4 tingkatan progresif berdasarkan nilai bisnisnya.',
+          'Tingkat 1 - Descriptive Analytics ("What happened?"): Menjelaskan apa yang telah terjadi di masa lalu. Contoh: "Penjualan kopi susu bulan ini turun sebesar 15%."',
+          'Tingkat 2 - Diagnostic Analytics ("Why did it happen?"): Menyelidiki akar penyebab di balik peristiwa tersebut. Contoh: "Penurunan terjadi karena pelanggan di area perkantoran beralih ke merek kompetitor."',
+          'Tingkat 3 - Predictive Analytics ("What will happen?"): Memperkirakan apa yang kemungkinan akan terjadi di masa depan. Contoh: "Memprediksi pelanggan mana yang berpotensi tinggi untuk berhenti berlangganan (churn)."',
+          'Tingkat 4 - Prescriptive Analytics ("What should we do?"): Memberikan resep tindakan optimal yang harus diambil untuk meraih hasil terbaik. Contoh: "Memberikan voucher loyalitas terpersonalisasi sebelum pelanggan churn."'
+        ]
+      },
+      {
+        id: 'c4',
+        title: '4. Revolusi Alur Kerja: Dari 2 Hari Menjadi 2 Jam',
+        paragraphs: [
+          'Kehadiran AI telah merevolusi siklus kerja analis secara dramatis. Dahulu, menulis SQL membutuhkan waktu berjam-jam untuk mengingat sintaks dan memperbaiki kesalahan baris kode. Kini, AI dapat menyusun draf query dalam hitungan detik, memungkinkan analis fokus memvalidasi kebenaran logikanya.',
+          'Pembersihan data teks dan ulasan kualitatif yang dulunya memakan waktu berhari-hari kini dapat dikelompokkan oleh AI secara instan. Bahkan, siklus analisis lengkap yang dulunya memakan waktu rata-rata 2 hari kini dapat diselesaikan dalam waktu kurang dari 2 jam.',
+          'Formula analis unggul masa kini adalah: Data Thinking (pola pikir analitis) + Leveraging AI Tools (kemahiran memanfaatkan tool AI) + Business Judgement (kepekaan terhadap dampak bisnis nyata).'
+        ]
+      },
+      {
+        id: 'c5',
+        title: '5. Mitos vs Fakta & Peluang Switch Career',
+        paragraphs: [
+          'Banyak mitos yang menghambat orang untuk belajar data: mitos bahwa harus menguasai kalkulus tingkat tinggi (faktanya: statistika dasar sudah sangat cukup), mitos wajib bisa bahasa Python sejak hari pertama (faktanya: SQL dan Spreadsheet adalah pondasi paling utama), serta mitos harus berlatar belakang teknik IT.',
+          'Data menunjukkan bahwa lebih dari 55% siswa di RevoU adalah career switcher yang berasal dari beragam latar belakang non-IT (seperti penjualan, administrasi, manajemen, hingga bahasa). Pengalaman industri di masa lalu justru menjadi kekuatan unik saat dipadukan dengan keterampilan analitik.',
+          'Kuncinya bukanlah mengoleksi sebanyak mungkin sertifikat teori, melainkan membangun portofolio konkret yang membuktikan bahwa Anda mampu menyelesaikan masalah bisnis nyata dengan data.'
+        ]
+      }
+    ],
+    reflections: [
+      {
+        id: 'q1',
+        question: 'Tingkatan analisis data manakah yang memiliki nilai bisnis tertinggi karena memberikan rekomendasi tindakan aksi?',
+        options: [
+          'Descriptive Analytics',
+          'Diagnostic Analytics',
+          'Predictive Analytics',
+          'Prescriptive Analytics'
+        ],
+        correctIndex: 3,
+        explanation: 'Prescriptive Analytics tidak hanya memprediksi apa yang akan terjadi, tetapi juga meresepkan langkah aksi konkret terbaik yang harus diambil oleh manajemen.',
+        thoughtPrompt: 'Bagaimana data dapat membantu Anda mengambil keputusan yang lebih objektif dalam pekerjaan atau kehidupan sehari-hari?'
+      }
+    ]
+  },
+  {
     id: 'secangkir-kopi-dan-waktu',
     title: 'Secangkir Kopi dan Waktu yang Hilang',
     author: 'Ahmad R.',
     coverEmoji: '☕',
     coverGradient: 'from-amber-700 to-yellow-800',
-    category: 'Filosofis',
+    category: 'Filosofis & Esai',
     readingTimeMinutes: 3,
     difficulty: 'Mudah',
     summary: 'Seorang arsitek yang selalu terburu-buru mampir ke sebuah kedai kopi tersembunyi, di mana waktu seolah berjalan lebih lambat.',
     moralLesson: 'Ketenangan bukanlah saat dunia berhenti berputar, melainkan saat kita memberi ruang bagi jiwa untuk bernapas.',
+    attribution: 'Esai Refleksi Kehidupan • Ahmad R.',
     chapters: [
       {
         id: 'c1',
@@ -66,11 +219,12 @@ export const INITIAL_STORIES: Story[] = [
     author: 'Citra Permata',
     coverEmoji: '🌊',
     coverGradient: 'from-blue-700 to-indigo-900',
-    category: 'Petualangan',
+    category: 'Inspirasi',
     readingTimeMinutes: 4,
     difficulty: 'Menengah',
     summary: 'Di sebuah pulau karang terpencil, seorang pemuda menemukan bahwa cahaya mercusuar bukan sekadar penerang jalan, tetapi penjaga harapan.',
     moralLesson: 'Cahaya sekecil apa pun di tengah kegelapan memiliki kekuatan untuk menuntun mereka yang tersesat.',
+    attribution: 'Kisah Inspiratif Pengabdian • Citra Permata',
     chapters: [
       {
         id: 'c1',
@@ -120,123 +274,6 @@ export const INITIAL_STORIES: Story[] = [
     ]
   },
   {
-    id: 'malam-ketika-hutan-lupa-bernyanyi',
-    title: 'Malam Ketika Hutan Lupa Bernyanyi',
-    author: 'Dewi Anggraini',
-    coverEmoji: '🦉',
-    coverGradient: 'from-emerald-800 to-teal-950',
-    category: 'Fabel & Dongeng',
-    readingTimeMinutes: 3,
-    difficulty: 'Mudah',
-    summary: 'Kisah seekor burung hantu tua dan kunang-kunang pemalu yang mengembalikan keharmonisan suara hutan rimba.',
-    moralLesson: 'Setiap suara, betapa pun kecilnya, memiliki nada penting dalam indahnya harmoni kehidupan.',
-    chapters: [
-      {
-        id: 'c1',
-        title: 'Kesunyian yang Mengganjal',
-        paragraphs: [
-          'Hutan Lumut biasanya tidak pernah sepi. Saat matahari terbenam, jangkrik mulai menggesekkan sayapnya, katak pohon bernyanyi bersahut-sahutan, dan daun-daun pinus berbisik ditiup angin lembut.',
-          'Namun malam itu, keheningan aneh menyelimuti rimba. Tidak ada nyanyian, tidak ada gesekan sayap, bahkan angin seolah menahan napasnya di balik dahan-dahan tua.',
-          'Pak Moko, burung hantu bertanduk yang bijaksana, membuka kelopak matanya yang bulat besar. Ia melompat ke dahan terendah dan memandang ke bawah.',
-          'Di atas sehelai daun pakis, duduk seekor jangkrik muda yang menundukkan kepalanya dalam-dalam. Di sebelahnya, katak-katak hijau hanya saling tatap tanpa bersuara.'
-        ]
-      },
-      {
-        id: 'c2',
-        title: 'Rasa Cemas yang Mengunci Nada',
-        paragraphs: [
-          '"Mengapa hutan ini terasa seperti gua kosong tanpa suara?" tanya Pak Moko dengan suara dalamnya yang hangat.',
-          'Si jangkrik menjawab pelan, "Tadi sore, kawanan burung merak datang dan menertawakan suara kami. Mereka bilang suara jangkrik cempreng dan suara katak memekakkan telinga. Kami merasa suara kami hanya mengotori hutan, jadi kami memilih diam."',
-          'Pak Moko menghela napas panjang. Dari balik rumpun bambu, seekor kunang-kunang kecil bernama Binar terbang mendekat. Cahayanya berkedip redup dan ragu-ragu.',
-          '"Aku juga takut menyala, Pak Moko," bisik Binar. "Cahayaku terlalu kecil dibandingkan bulan purnama yang megah di langit sana."'
-        ]
-      },
-      {
-        id: 'c3',
-        title: 'Simfoni yang Sebenarnya',
-        paragraphs: [
-          'Pak Moko tersenyum lembut. Ia mengepakkan sayap lebarnya perlahan tanpa menimbulkan suara, lalu menatap mereka satu per satu.',
-          '"Tahukah kalian mengapa hutan ini begitu indah?" tanya Pak Moko. "Bukan karena suara merak yang anggun saja. Hutan ini hidup karena ada derik jangkrik yang menjaga malam, suara katak yang menyambut hujan, dan kerlip kunang-kunang yang menemani mereka yang tersesat di semak gelap."',
-          '"Bulan tidak pernah meminta kunang-kunang padam. Hutan tidak akan pernah menjadi orkestra jika semua instrumennya adalah seruling yang sama."',
-          'Binar mulai berkedip lebih terang. Jangkrik menarik napas dan mencoba menggesek sayapnya satu kali—kriik... kriik. Katak menyambut dengan denting nada rendah yang mantap. Malam itu, Hutan Lumut kembali bernyanyi, lebih merdu dan penuh syukur daripada sebelumnya.'
-        ]
-      }
-    ],
-    reflections: [
-      {
-        id: 'q1',
-        question: 'Mengapa penghuni hutan sebelumnya memilih untuk tidak bersuara?',
-        options: [
-          'Karena mereka sedang mengantuk dan ingin tidur lebih cepat.',
-          'Karena takut diserang predator yang sedang lewat.',
-          'Karena merasa minder dan tidak berharga setelah diejek oleh kawanan lain.',
-          'Karena ada larangan bersuara dari raja hutan.'
-        ],
-        correctIndex: 2,
-        explanation: 'Mereka merasa ragu pada kemampuan sendiri akibat perbandingan dan komentar yang menjatuhkan rasa percaya diri.',
-        thoughtPrompt: 'Pernahkah Anda menahan kelebihan diri hanya karena merasa tidak sebaik orang lain?'
-      }
-    ]
-  },
-  {
-    id: 'bintang-jatuh-di-halaman-belakang',
-    title: 'Bintang Jatuh di Halaman Belakang',
-    author: 'Nadia Sastrowardoyo',
-    coverEmoji: '✨',
-    coverGradient: 'from-violet-800 to-purple-950',
-    category: 'Inspirasi',
-    readingTimeMinutes: 3,
-    difficulty: 'Mudah',
-    summary: 'Kisah percakapan hangat antara Nenek Maya dan cucunya tentang cara menemukan keajaiban dalam rutinitas sehari-hari.',
-    moralLesson: 'Keajaiban bukanlah peristiwa langka di langit jauh, melainkan kebaikan kecil yang kita lakukan dengan tulus setiap hari.',
-    chapters: [
-      {
-        id: 'c1',
-        title: 'Tenda Sederhana di Bawah Langit',
-        paragraphs: [
-          'Malam liburan sekolah selalu menjadi waktu yang paling ditunggu oleh Tara. Di halaman belakang rumah Nenek Maya yang asri, mereka mendirikan tenda kecil beralaskan tikar pandan.',
-          'Di atas meja kayu terhidang sepiring pisang goreng hangat dan teh serai beraroma manis. Angin malam berhembus lembut menggoyangkan dahan pohon mangga.',
-          '"Nenek," tanya Tara sambil menengadah memandangi langit yang bertabur bintang, "apakah benar kalau kita melihat bintang jatuh dan berdoa, permintaan kita pasti terkabul?"',
-          'Nenek Maya tertawa kecil, suara tawanya selalu terdengar seperti gemerincing loncing angin tembaga.'
-        ]
-      },
-      {
-        id: 'c2',
-        title: 'Bintang yang Tak Pernah Jatuh',
-        paragraphs: [
-          '"Orang-orang kuno percaya begitu, sayang," jawab Nenek seraya membelai rambut Tara. "Tapi Nenek rasa, kita sering terlalu sibuk menatap ke atas menunggu satu bintang jatuh, sampai lupa pada ribuan bintang yang tetap setia bersinar di atas kepala kita."',
-          'Tara mengerutkan keningnya, mencoba memahami perkataan neneknya yang terdengar seperti teka-teki.',
-          '"Lihat tanaman melati di sampingmu itu," tunjuk Nenek. "Setiap pagi ia mekar tanpa menuntut tepuk tangan. Lihat ayahmu yang setiap hari bangun subuh menyiapkan sarapan untukmu. Mereka semua adalah bintang-bintang yang tidak pernah jatuh, tapi selalu menerangi harimu."'
-        ]
-      },
-      {
-        id: 'c3',
-        title: 'Doa yang Sebenarnya',
-        paragraphs: [
-          'Tara memandang kuntum bunga melati yang putih bersih di sudut halaman. Wanginya lembut menembus udara malam.',
-          'Tepat saat itu, seberkas garis cahaya perak meluncur cepat melintasi langit timur—bintang jatuh yang sesungguhnya.',
-          '"Tara, cepat pejamkan mata dan minta permohonan!" seru Nenek berbisik gembira.',
-          'Tara tersenyum, menutup matanya sejenak, lalu membukanya kembali. "Aku sudah berdoa, Nek. Aku tidak meminta mainan baru atau terbang ke bulan. Aku hanya berterima kasih karena malam ini bisa duduk di sini bersama Nenek."'
-        ]
-      }
-    ],
-    reflections: [
-      {
-        id: 'q1',
-        question: 'Apa arti "bintang yang tak pernah jatuh" menurut Nenek Maya?',
-        options: [
-          'Bintang buatan yang dipasang di atap rumah.',
-          'Orang-orang dan hal-hal sederhana yang setiap hari setia memberi kebaikan tanpa kita sadari.',
-          'Satelit buatan yang mengorbit bumi.',
-          'Koleksi lampu taman yang menyala semalaman.'
-        ],
-        correctIndex: 1,
-        explanation: 'Nenek mengingatkan bahwa hal paling berharga sering kali adalah rutinitas kasih sayang yang hadir setiap hari.',
-        thoughtPrompt: 'Sebutkan 3 hal kecil hari ini yang membuat Anda merasa bersyukur.'
-      }
-    ]
-  },
-  {
     id: 'rahasia-jam-pasir-kayu-jati',
     title: 'Rahasia Jam Pasir Kayu Jati',
     author: 'Bambang Sudiro',
@@ -247,6 +284,7 @@ export const INITIAL_STORIES: Story[] = [
     difficulty: 'Menengah',
     summary: 'Seorang pembuat jam mekanik menemukan bahwa butiran pasir terbaik untuk mengukur waktu bukan berasal dari pantai, melainkan dari sisa kenangan berharga.',
     moralLesson: 'Waktu bukanlah musuh yang harus dikalahkan, melainkan kanvas yang menunggu untuk kita warnai dengan makna.',
+    attribution: 'Esai Sains & Filosofi Waktu • Bambang Sudiro',
     chapters: [
       {
         id: 'c1',
@@ -294,64 +332,6 @@ export const INITIAL_STORIES: Story[] = [
         thoughtPrompt: 'Apa kegiatan yang membuat Anda merasa waktu berjalan lambat dan penuh kedamaian?'
       }
     ]
-  },
-  {
-    id: 'rangkuman-revou-product-mindset',
-    title: 'Rangkuman Belajar: Membangun Solusi yang Dicintai Pengguna',
-    author: 'Catatan Belajar RevoU',
-    coverEmoji: '🚀',
-    coverGradient: 'from-blue-600 to-indigo-800',
-    category: 'Edukasi & Rangkuman',
-    readingTimeMinutes: 4,
-    difficulty: 'Menengah',
-    summary: 'Sintesis pemahaman mandiri tentang problem framing, data-driven vs data-informed, dan seni melakukan eksperimen cepat tanpa berasumsi.',
-    moralLesson: 'Solusi terbaik tidak lahir dari kecanggihan fitur semata, melainkan dari kedalaman empati kita dalam memahami keresahan nyata pengguna.',
-    attribution: 'Catatan Belajar Pribadi • Terinspirasi dari Kerangka Kerja Problem Solving & Product Management',
-    isCustom: false,
-    chapters: [
-      {
-        id: 'c1',
-        title: 'Jatuh Cinta pada Masalah, Bukan Solusinya',
-        paragraphs: [
-          'Dalam dunia pengembangan produk dan strategi digital, kesalahan paling umum pemula adalah melompat terlalu cepat ke solusi. Sering kali kita membuat aplikasi atau rencana bisnis yang rumit sebelum benar-benar membuktikan apakah ada orang yang membutuhkan hal tersebut.',
-          'Prinsip utama yang perlu ditanamkan adalah "Fall in love with the problem, not your solution". Sebelum menulis sebaris kode atau merancang materi presentasi, pastikan kita memahami "Who is the user?", "What is their pain point?", dan "Why does this problem matter now?".',
-          'Wawancara pengguna yang berkualitas bukanlah menanyakan "Apakah kamu suka ide saya?", melainkan menggali perilaku nyata mereka di masa lalu: "Bagaimana cara Anda menyelesaikan masalah ini kemarin?". Tindakan masa lalu jauh lebih jujur daripada janji masa depan.'
-        ]
-      },
-      {
-        id: 'c2',
-        title: 'Data Sebagai Kompas, Intuisi Sebagai Pengemudi',
-        paragraphs: [
-          'Banyak yang mengira bahwa menjadi seorang profesional berarti harus 100% data-driven. Namun, ada perbedaan halus namun krusial antara "Data-Driven" dan "Data-Informed".',
-          'Data-driven murni melihat angka apa adanya tanpa konteks manusiawi. Ini bisa berbahaya karena angka hanya memberitahu "Apa yang terjadi" (What), tetapi tidak selalu menjelaskan "Mengapa itu terjadi" (Why).',
-          'Sebagai pembelajar yang bijak, pendekatan data-informed menggabungkan metrik kuantitatif dengan riset kualitatif, etika bisnis, dan empati pengguna. Angka menjadi kompas penunjuk arah, namun pertimbangan manusialah yang memutuskan rute jalan yang bermartabat.'
-        ]
-      },
-      {
-        id: 'c3',
-        title: 'Eksperimen Cepat dan Refleksi Berkelanjutan',
-        paragraphs: [
-          'Belajar bukan sekadar menghafal modul atau mencatat istilah asing. Nilai sejati dari ilmu adalah saat ia diuji dalam siklus: Bangun (Build), Ukur (Measure), dan Pelajari (Learn).',
-          'Buatlah eksperimen terkecil yang bisa memvalidasi hipotesis Anda. Jika hasil belum sesuai harapan, itu bukan kegagalan diri, melainkan data baru yang menyingkap kebenaran.',
-          'Dengan merangkum materi secara berkala dan membacanya kembali dengan tenang di BacaBaca, konsep-konsep abstrak akan mengendap menjadi intuisi praktis yang siap digunakan di dunia kerja nyata.'
-        ]
-      }
-    ],
-    reflections: [
-      {
-        id: 'q1',
-        question: 'Mengapa pendekatan "Data-Informed" sering kali lebih holistik daripada sekadar "Data-Driven" murni?',
-        options: [
-          'Karena data-informed sama sekali tidak memerlukan metrik angka kuantitatif.',
-          'Karena data-informed memadukan data kuantitatif dengan empati konteks kualitatif dan etika manusiawi.',
-          'Karena data-driven membutuhkan biaya server yang terlalu mahal.',
-          'Karena data kualitatif selalu lebih akurat daripada data kuantitatif.'
-        ],
-        correctIndex: 1,
-        explanation: 'Data-informed menyadari keterbatasan angka kuantitatif dan melengkapinya dengan pemahaman mendalam tentang motif, etika, dan konteks pengguna.',
-        thoughtPrompt: 'Bagaimana Anda biasanya mengambil keputusan penting: lebih mengandalkan data, intuisi, atau perpaduan keduanya?'
-      }
-    ]
   }
 ];
 
@@ -359,7 +339,7 @@ export const INITIAL_BADGES = [
   {
     id: 'first-step',
     title: 'Langkah Pertama',
-    description: 'Menyelesaikan bacaan cerita pertamamu di BacaBaca.',
+    description: 'Menyelesaikan bacaan pertamamu di BacaBaca.',
     icon: '🌱',
     unlocked: false
   },
@@ -386,8 +366,8 @@ export const INITIAL_BADGES = [
   },
   {
     id: 'all-rounder',
-    title: 'Penjelajah Kisah',
-    description: 'Membaca cerita dari minimal 3 kategori berbeda.',
+    title: 'Penjelajah Pengetahuan',
+    description: 'Membaca materi dari minimal 3 kategori berbeda.',
     icon: '🧭',
     unlocked: false
   },

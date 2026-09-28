@@ -12,9 +12,11 @@ import {
   Download,
   Upload,
   RotateCcw,
-  ShieldCheck
+  ShieldCheck,
+  FileText
 } from 'lucide-react';
 import type { Story, StoryCategory } from '../../types';
+import { parseMarkdownToStory } from '../../utils/markdownParser';
 
 interface StoryLibraryProps {
   stories: Story[];
@@ -26,6 +28,7 @@ interface StoryLibraryProps {
   onDeleteStory: (story: Story) => void;
   onExportData: () => void;
   onImportData: (jsonString: string) => boolean;
+  onDirectAddStoryData?: (storyData: Omit<Story, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onResetToDefault: () => void;
 }
 
@@ -39,19 +42,20 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
   onDeleteStory,
   onExportData,
   onImportData,
+  onDirectAddStoryData,
   onResetToDefault
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<StoryCategory>('Semua');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const docFileInputRef = useRef<HTMLInputElement>(null);
 
   const categories: StoryCategory[] = [
     'Semua',
-    'Edukasi & Rangkuman',
-    'Teknologi & Bisnis',
-    'Filosofis',
-    'Petualangan',
-    'Fabel & Dongeng',
+    'Rangkuman & Modul',
+    'Data & Tech',
+    'Digital Marketing',
+    'Filosofis & Esai',
     'Inspirasi',
     'Sains & Alam'
   ];
@@ -71,7 +75,25 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
 
   const featuredStory = stories[0];
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle direct file upload (.md, .txt)
+  const handleDocFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target?.result as string;
+        if (text && onDirectAddStoryData) {
+          const parsed = parseMarkdownToStory(text, file.name);
+          onDirectAddStoryData(parsed);
+          alert(`Materi "${parsed.title}" berhasil diimpor dan siap dibaca!`);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  // Handle backup JSON file upload
+  const handleBackupFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -80,7 +102,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
         if (text) {
           const success = onImportData(text);
           if (success) {
-            alert('Catatan & data bacaan berhasil diimpor!');
+            alert('Catatan & data bacaan berhasil dipulihkan!');
           } else {
             alert('Format file JSON tidak valid. Pastikan file backup berasal dari BacaBaca.');
           }
@@ -107,17 +129,17 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
               color: 'var(--accent-hover)'
             }}>
             <Sparkles className="w-3.5 h-3.5" />
-            Membaca Nyaman & Rangkuman Belajar Pribadi
+            Ruang Membaca Nyaman untuk Segala Jenis Teks
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight"
             style={{ color: 'var(--text-primary)' }}>
-            Temukan Kesenangan dalam Setiap Lembar Kata
+            Membaca Materi & Rangkuman Jadi Menyenangkan
           </h1>
 
           <p className="text-sm sm:text-base leading-relaxed opacity-80"
             style={{ color: 'var(--text-secondary)' }}>
-            Selamat datang di <strong>BacaBaca</strong>. Nikmati kisah-kisah penuh hikmah dan <strong>catatan rangkuman belajar Anda (mis. RevoU / kursus / buku)</strong> dalam lingkungan membaca yang tenang, bebas distraksi, dan bernutrisi tinggi.
+            Selamat datang di <strong>BacaBaca</strong>. Masukkan teks apa saja—mulai dari <strong>rangkuman webinar RevoU, modul kursus, artikel, riset, esai, hingga buku</strong>—dan nikmati membacanya dengan suara latar alam penunjang fokus, narasi suara interaktif, serta tema ramah mata.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -128,7 +150,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                 style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
               >
                 <BookOpen className="w-4 h-4" />
-                Baca Rekomendasi Hari Ini
+                Mulai Baca Rekomendasi
               </button>
             )}
 
@@ -142,15 +164,31 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
               }}
             >
               <Plus className="w-4 h-4 text-amber-600" />
-              Tambah / Tulis Rangkuman Baru
+              Tulis Materi Baru
             </button>
+
+            <button
+              onClick={() => docFileInputRef.current?.click()}
+              className="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border flex items-center gap-1.5 transition-colors hover:bg-black/5"
+              style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+            >
+              <FileText className="w-4 h-4 text-blue-600" />
+              Impor File (.md / .txt)
+            </button>
+            <input
+              type="file"
+              ref={docFileInputRef}
+              onChange={handleDocFileUpload}
+              accept=".md,.txt,.markdown"
+              className="hidden"
+            />
 
             <button
               onClick={onOpenStats}
               className="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border transition-colors hover:bg-black/5"
               style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
             >
-              Lihat Jejak Membaca
+              Statistik Membaca
             </button>
           </div>
         </div>
@@ -170,7 +208,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 opacity-50" />
             <input
               type="text"
-              placeholder="Cari cerita, rangkuman, penulis, atau topik belajar..."
+              placeholder="Cari materi, rangkuman, penulis, atau kata kunci..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm outline-none transition-all focus:ring-2 focus:ring-amber-500"
@@ -186,12 +224,21 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onAddNewStory}
-              title="Tulis Rangkuman / Bacaan Baru"
-              className="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all hover:opacity-90"
+              title="Tulis Materi / Rangkuman Baru"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all hover:opacity-90"
               style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
             >
               <Plus className="w-4 h-4" />
-              <span>Tambah Bacaan</span>
+              <span>Tambah Teks</span>
+            </button>
+
+            <button
+              onClick={() => docFileInputRef.current?.click()}
+              title="Impor Dokumen Teks (.md atau .txt)"
+              className="p-2 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
+              style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
+            >
+              <FileText className="w-4 h-4 text-blue-600" />
             </button>
 
             <button
@@ -205,7 +252,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
 
             <button
               onClick={() => fileInputRef.current?.click()}
-              title="Pulihkan / Impor Data dari File JSON"
+              title="Pulihkan / Impor Cadangan Data dari File JSON"
               className="p-2 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
               style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
             >
@@ -214,7 +261,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
             <input
               type="file"
               ref={fileInputRef}
-              onChange={handleFileUpload}
+              onChange={handleBackupFileUpload}
               accept=".json"
               className="hidden"
             />
@@ -245,7 +292,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
         </div>
       </section>
 
-      {/* Story Cards Grid */}
+      {/* Reading Materials Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStories.map((story) => {
           const isCompleted = completedStoryIds.includes(story.id);
@@ -325,7 +372,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                       e.stopPropagation();
                       onEditStory(story);
                     }}
-                    title="Edit Bacaan Ini"
+                    title="Edit Materi Ini"
                     className="p-1.5 rounded-lg border hover:bg-black/5 transition-colors"
                     style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
                   >
@@ -338,14 +385,14 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                       e.stopPropagation();
                       onDeleteStory(story);
                     }}
-                    title="Hapus Bacaan Ini"
+                    title="Hapus Materi Ini"
                     className="p-1.5 rounded-lg border hover:bg-red-500/10 hover:text-red-600 transition-colors"
                     style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Read Story Action */}
+                  {/* Read Action */}
                   <button
                     onClick={() => onSelectStory(story)}
                     className="inline-flex items-center gap-1 font-bold text-amber-600 pl-1 group-hover:translate-x-1 transition-transform"
@@ -372,7 +419,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           Komitmen Etika & Kepatuhan Hak Cipta
         </div>
         <p className="leading-relaxed opacity-85">
-          Proyek <strong>BacaBaca</strong> menghargai integritas akademik dan hak cipta. Seluruh catatan, rangkuman, dan materi yang dibuat di platform ini disimpan secara lokal di perangkat pribadi Anda untuk tujuan <em>personal study</em> / studi mandiri (*Fair Use*). Kami mengimbau seluruh pengguna untuk menyusun rangkuman menggunakan kalimat hasil sintesis pemahaman sendiri (parafrase) dan menyertakan atribusi sumber materi secara jujur dan transparan.
+          Proyek <strong>BacaBaca</strong> menghargai integritas akademik dan hak cipta. Seluruh catatan, rangkuman webinar, modul kursus, dan materi yang dibuat atau diimpor di platform ini disimpan secara lokal di perangkat pribadi Anda untuk tujuan <em>personal study</em> / studi mandiri (*Fair Use*). Kami mengimbau seluruh pengguna untuk menyusun rangkuman menggunakan kalimat hasil pemahaman sendiri (parafrase) dan menyertakan atribusi sumber materi secara jujur dan transparan.
         </p>
 
         <div className="pt-2 flex items-center justify-between border-t border-black/5 text-[11px]">
@@ -380,10 +427,10 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           <button
             onClick={onResetToDefault}
             className="flex items-center gap-1 text-amber-700 hover:underline"
-            title="Kembalikan daftar cerita ke bawaan awal"
+            title="Kembalikan daftar materi ke bawaan awal"
           >
             <RotateCcw className="w-3 h-3" />
-            Reset ke Cerita Bawaan
+            Reset ke Materi Bawaan
           </button>
         </div>
       </section>
@@ -392,10 +439,10 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
       <footer className="pt-4 text-center border-t space-y-2 opacity-75"
         style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
         <p className="text-xs italic font-reading-serif">
-          "Membaca bukanlah tentang menyelesaikan buku secepat mungkin, melainkan tentang apa yang tumbuh di dalam dirimu saat kata-kata itu lewat."
+          "Membaca bukanlah tentang menyelesaikan teks secepat mungkin, melainkan tentang apa yang tumbuh di dalam dirimu saat kata-kata itu dipahami."
         </p>
         <p className="text-[11px]">
-          © {new Date().getFullYear()} BacaBaca • Ruang Membaca Menyenangkan untuk Semua
+          © {new Date().getFullYear()} BacaBaca • Ruang Membaca Nyaman untuk Segala Hal
         </p>
       </footer>
 

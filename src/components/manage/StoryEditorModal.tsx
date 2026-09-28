@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, 
   Plus, 
@@ -7,9 +7,11 @@ import {
   BookOpen, 
   ShieldCheck, 
   FileText,
-  HelpCircle
+  HelpCircle,
+  Upload
 } from 'lucide-react';
 import type { Story, StoryCategory, StoryChapter, ReflectionQuestion } from '../../types';
+import { parseMarkdownToStory } from '../../utils/markdownParser';
 
 interface StoryEditorModalProps {
   isOpen: boolean;
@@ -27,13 +29,15 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [coverEmoji, setCoverEmoji] = useState('📚');
-  const [category, setCategory] = useState<StoryCategory>('Edukasi & Rangkuman');
+  const [category, setCategory] = useState<StoryCategory>('Rangkuman & Modul');
   const [difficulty, setDifficulty] = useState<'Mudah' | 'Menengah' | 'Mendalam'>('Menengah');
   const [readingTime, setReadingTime] = useState<number>(3);
   const [summary, setSummary] = useState('');
   const [moralLesson, setMoralLesson] = useState('');
   const [attribution, setAttribution] = useState('Catatan Belajar Pribadi • Sintesis Pemahaman Mandiri');
   
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Chapter State
   const [chapters, setChapters] = useState<{ id: string; title: string; rawText: string }[]>([
     {
@@ -86,7 +90,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
       setTitle('');
       setAuthor('Pembelajar Mandiri');
       setCoverEmoji('🚀');
-      setCategory('Edukasi & Rangkuman');
+      setCategory('Rangkuman & Modul');
       setDifficulty('Menengah');
       setReadingTime(3);
       setSummary('');
@@ -109,40 +113,106 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Auto template filler for RevoU or educational notes
-  const handleApplyRevoUTemplate = () => {
-    setTitle('Rangkuman Belajar: Strategi Digital & Pemecahan Masalah');
-    setAuthor('Catatan Belajar Saya');
-    setCoverEmoji('🚀');
-    setCategory('Edukasi & Rangkuman');
+  // Handle uploading a Markdown or TXT file directly
+  const handleMarkdownUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target?.result as string;
+        if (text) {
+          const parsed = parseMarkdownToStory(text, file.name);
+          setTitle(parsed.title);
+          setAuthor(parsed.author);
+          setCoverEmoji(parsed.coverEmoji);
+          setCategory(parsed.category);
+          setDifficulty(parsed.difficulty);
+          setReadingTime(parsed.readingTimeMinutes);
+          setSummary(parsed.summary);
+          setAttribution(parsed.attribution || 'Dokumen Diimpor');
+          setChapters(
+            parsed.chapters.map(c => ({
+              id: c.id,
+              title: c.title,
+              rawText: c.paragraphs.join('\n\n')
+            }))
+          );
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  // Quick Template: Digital Marketing
+  const handleApplyDMMCTemplate = () => {
+    setTitle('Rangkuman Belajar: Karir Digital Marketing di Era AI');
+    setAuthor('Catatan Belajar Mandiri');
+    setCoverEmoji('🎯');
+    setCategory('Digital Marketing');
     setDifficulty('Menengah');
     setReadingTime(4);
-    setSummary('Rangkuman poin-poin inti dari sesi belajar RevoU: analisis masalah, perumusan hipotesis, dan eksekusi berbasis data.');
-    setMoralLesson('Teori tanpa praktik hanyalah hafalan; ilmu sejati terbentuk saat kita mengujinya ke masalah nyata.');
-    setAttribution('Catatan Belajar Pribadi • Ditulis ulang dengan pemahaman sendiri');
+    setSummary('Rangkuman sesi webinar: Paradigma AI sebagai Copilot bukan Autopilot, T-Shaped Marketer, dan penguasaan metrik bisnis.');
+    setMoralLesson('Jadikan AI sebagai Copilot (asisten pembantu), bukan Autopilot. Manusia tetap kapten yang memegang arah dan strategi.');
+    setAttribution('Catatan Belajar Pribadi • Webinar RevoU DMMC');
     setChapters([
       {
         id: 'c1',
-        title: '1. Problem Definition & User Needs',
-        rawText: 'Langkah pertama yang paling krusial adalah mendefinisikan masalah secara tajam.\n\nJangan langsung memikirkan solusi sebelum memahami siapa penggunanya dan apa hambatan terbesar yang mereka alami saat ini.'
+        title: '1. AI Merevolusi, Bukan Menggantikan',
+        rawText: 'AI menggeser tugas repetitif (drafting caption, variasi copy, A/B testing) sehingga marketer memiliki waktu lebih banyak untuk berpikir strategis.\n\nYang paling dicari industri adalah AI-Augmented Marketer yang mampu mengarahkan AI untuk mendorong keuntungan bisnis.'
       },
       {
         id: 'c2',
-        title: '2. Mengambil Keputusan yang Bertanggung Jawab',
-        rawText: 'Gunakan data kuantitatif sebagai panduan, namun selalu lengkapi dengan wawancara kualitatif.\n\nKombinasi angka dan cerita nyata pengguna menghasilkan solusi yang tidak hanya efisien, tetapi juga bermakna.'
+        title: '2. T-Shaped Marketer & Tools Wajib',
+        rawText: 'Memiliki wawasan luas tentang digital marketing secara umum, dan spesialisasi mendalam di satu bidang (Ads, SEO, CRM).\n\nTool nomor satu yang wajib dikuasai untuk analisis data adalah Spreadsheet (Excel/Google Sheets).'
       }
     ]);
     setIncludeQuiz(true);
-    setQuizQuestion('Apa langkah terpenting sebelum merancang solusi teknis?');
+    setQuizQuestion('Apa peran ideal AI bagi seorang digital marketer modern?');
     setQuizOptions([
-      'Langsung membuat antarmuka aplikasi yang rumit',
-      'Mendefinisikan masalah dan keresahan pengguna secara mendalam',
-      'Membeli server berkapasitas besar',
-      'Menghafal seluruh istilah teknis'
+      'Pengganti total seluruh fungsi pemasaran tanpa pengawasan',
+      'Copilot (asisten cerdas) yang mempercepat eksekusi di bawah kendali strategis manusia',
+      'Hanya boleh digunakan untuk membuat gambar poster',
+      'Tidak boleh digunakan sama sekali'
     ]);
     setQuizCorrectIndex(1);
-    setQuizExplanation('Pemahaman masalah yang tajam mencegah pemborosan sumber daya dan memastikan solusi benar-benar dibutuhkan.');
-    setQuizThoughtPrompt('Masalah apa yang sedang ingin Anda selesaikan minggu ini?');
+    setQuizExplanation('AI mempercepat pekerjaan teknis, namun arah brand, empati, dan keputusan strategis tetap dipimpin manusia.');
+    setQuizThoughtPrompt('Skill digital apa yang paling ingin Anda perdalam bulan ini?');
+  };
+
+  // Quick Template: Data Analytics
+  const handleApplyDAMCTemplate = () => {
+    setTitle('Rangkuman Belajar: Karir Data Analytics di Era AI');
+    setAuthor('Catatan Belajar Mandiri');
+    setCoverEmoji('📊');
+    setCategory('Data & Tech');
+    setDifficulty('Menengah');
+    setReadingTime(5);
+    setSummary('Rangkuman peran analis data sebagai jembatan bisnis, ledakan Big Data 2026, 4 tingkat analisis, dan percepatan workflow AI.');
+    setMoralLesson('Formula Analis Unggul = Data Thinking + Leveraging AI Tools + Business Judgement.');
+    setAttribution('Catatan Belajar Pribadi • Webinar RevoU DAMC');
+    setChapters([
+      {
+        id: 'c1',
+        title: '1. Analis Data Sebagai Jembatan Bisnis',
+        rawText: 'Data Analyst bukan sekadar tukang hitung angka, melainkan jembatan antara data mentah yang berantakan dengan keputusan bisnis nyata.\n\nPerusahaan membutuhkan insight yang dapat ditindaklanjuti untuk meningkatkan profit atau memangkas kerugian.'
+      },
+      {
+        id: 'c2',
+        title: '2. 4 Tingkatan Analisis Data',
+        rawText: '1. Descriptive: What happened? (Apa yang terjadi di masa lalu)\n\n2. Diagnostic: Why did it happen? (Mengapa itu terjadi)\n\n3. Predictive: What will happen? (Apa yang mungkin terjadi ke depan)\n\n4. Prescriptive: What should we do? (Rekomendasi tindakan terbaik yang harus diambil)'
+      }
+    ]);
+    setIncludeQuiz(true);
+    setQuizQuestion('Apa tingkatan analisis data dengan nilai bisnis tertinggi?');
+    setQuizOptions([
+      'Descriptive Analytics',
+      'Diagnostic Analytics',
+      'Predictive Analytics',
+      'Prescriptive Analytics'
+    ]);
+    setQuizCorrectIndex(3);
+    setQuizExplanation('Prescriptive analytics meresepkan langkah aksi konkret terbaik untuk menghasilkan dampak bisnis terbesar.');
+    setQuizThoughtPrompt('Keputusan apa dalam keseharian Anda yang bisa diperbaiki dengan dukungan data?');
   };
 
   const handleAddChapter = () => {
@@ -215,14 +285,15 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
       moralLesson: moralLesson.trim() || undefined,
       attribution: attribution.trim() || 'Catatan Belajar Pribadi',
       chapters: formattedChapters,
-      reflections
+      reflections,
+      isCustom: true
     };
 
     onSaveStory(storyData);
     onClose();
   };
 
-  const popularEmojis = ['📚', '🚀', '💡', '☕', '🧠', '💼', '💻', '📈', '🌱', '✨', '🦉', '⏳'];
+  const popularEmojis = ['🚀', '📊', '🎯', '📚', '💡', '☕', '🧠', '💼', '💻', '📈', '🌱', '✨'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -240,14 +311,14 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-amber-500" />
             <h2 className="text-lg font-bold">
-              {storyToEdit ? 'Edit Bacaan / Rangkuman' : 'Tambah Bacaan & Rangkuman Baru'}
+              {storyToEdit ? 'Edit Materi Bacaan' : 'Tambah Bacaan / Rangkuman Baru'}
             </h2>
           </div>
           <button 
             onClick={onClose}
             className="p-1 rounded-full hover:bg-black/10 transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -265,33 +336,59 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
               Kaidah Etika Belajar & Kepatuhan Hak Cipta
             </div>
             <p className="opacity-80 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-              Fitur ini ditujukan untuk <strong>catatan belajar pribadi</strong> dan sintesis pemahaman mandiri (*personal study notes / fair use*). Mohon tidak menyalin langsung teks utuh materi berbayar atau melanggar hak cipta pihak ketiga.
+              BacaBaca dapat digunakan untuk membaca segala jenis materi: <strong>rangkuman webinar, modul kursus, artikel, riset, atau esai pribadi</strong>. Seluruh data disimpan privat di peramban Anda (*Fair Use / Personal Study*).
             </p>
           </div>
 
-          {/* Quick Template Button */}
+          {/* Quick Actions: Templates & File Import */}
           {!storyToEdit && (
-            <div className="flex items-center justify-between p-3 rounded-2xl border bg-amber-500/5"
+            <div className="p-3.5 rounded-2xl border bg-amber-500/5 space-y-2.5"
               style={{ borderColor: 'var(--accent)' }}>
-              <div>
-                <span className="text-xs font-bold block">Ingin menulis rangkuman belajar?</span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold block">Pilih Cara Memulai Cepat:</span>
                 <span className="text-[11px] opacity-75" style={{ color: 'var(--text-secondary)' }}>
-                  Gunakan struktur siap pakai untuk materi RevoU, kursus, atau buku.
+                  Impor file Markdown atau pilih template
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={handleApplyRevoUTemplate}
-                className="px-3 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-105 flex items-center gap-1"
-                style={{
-                  backgroundColor: 'var(--accent)',
-                  borderColor: 'var(--accent)',
-                  color: '#fff'
-                }}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                Template Belajar
-              </button>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all hover:bg-black/5 flex items-center gap-1.5"
+                  style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                >
+                  <Upload className="w-3.5 h-3.5 text-blue-600" />
+                  Impor File (.md / .txt)
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleMarkdownUpload}
+                  accept=".md,.txt,.markdown"
+                  className="hidden"
+                />
+
+                <button
+                  type="button"
+                  onClick={handleApplyDMMCTemplate}
+                  className="px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all hover:bg-black/5 flex items-center gap-1"
+                  style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                  Template Digital Marketing
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleApplyDAMCTemplate}
+                  className="px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all hover:bg-black/5 flex items-center gap-1"
+                  style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  Template Data Analytics
+                </button>
+              </div>
             </div>
           )}
 
@@ -299,14 +396,14 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-bold block mb-1">
-                Judul Bacaan / Rangkuman *
+                Judul Materi / Rangkuman *
               </label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="mis. Rangkuman Product Mindset"
+                placeholder="mis. Rangkuman RevoU DMMC: Karir Marketing"
                 className="w-full px-3.5 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-amber-500"
                 style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
               />
@@ -338,12 +435,11 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                 className="w-full px-2.5 py-2 rounded-xl border text-xs outline-none"
                 style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
               >
-                <option value="Edukasi & Rangkuman">Edukasi & Rangkuman</option>
-                <option value="Teknologi & Bisnis">Teknologi & Bisnis</option>
+                <option value="Rangkuman & Modul">Rangkuman & Modul</option>
+                <option value="Data & Tech">Data & Tech</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Filosofis & Esai">Filosofis & Esai</option>
                 <option value="Inspirasi">Inspirasi</option>
-                <option value="Filosofis">Filosofis</option>
-                <option value="Petualangan">Petualangan</option>
-                <option value="Fabel & Dongeng">Fabel & Dongeng</option>
                 <option value="Sains & Alam">Sains & Alam</option>
                 <option value="Refleksi">Refleksi</option>
               </select>
@@ -423,13 +519,13 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
 
           <div>
             <label className="text-xs font-bold block mb-1">
-              Pesan Intisari / Hikmah Belajar
+              Pesan Intisari / Poin Kunci
             </label>
             <input
               type="text"
               value={moralLesson}
               onChange={(e) => setMoralLesson(e.target.value)}
-              placeholder="mis. Pemahaman masalah mendalam jauh lebih penting daripada terburu-buru membuat solusi."
+              placeholder="mis. Winning Junior Analyst = Data Thinking + AI Tools + Business Judgement."
               className="w-full px-3.5 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-amber-500"
               style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
             />
@@ -444,7 +540,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
               type="text"
               value={attribution}
               onChange={(e) => setAttribution(e.target.value)}
-              placeholder="mis. Catatan Belajar Pribadi • Modul RevoU / Buku Sumber Terbuka"
+              placeholder="mis. Catatan Belajar Pribadi • Modul RevoU / Webinar DMMC"
               className="w-full px-3.5 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-amber-500"
               style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
             />
@@ -456,10 +552,10 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
               <div>
                 <h3 className="text-sm font-bold flex items-center gap-1.5">
                   <FileText className="w-4 h-4 text-amber-500" />
-                  Isi Bab & Konten Bacaan
+                  Isi Bab & Bagian Pembahasan
                 </h3>
                 <p className="text-[11px] opacity-75" style={{ color: 'var(--text-secondary)' }}>
-                  Tuliskan konten bab di bawah ini. Pisahkan baris untuk membuat paragraf baru.
+                  Pisahkan baris untuk membuat paragraf baru. Teks akan otomatis tersambung dengan fitur suara dan fokus baca.
                 </p>
               </div>
 
@@ -470,7 +566,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                 style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
               >
                 <Plus className="w-3.5 h-3.5" />
-                Tambah Bab
+                Tambah Bagian
               </button>
             </div>
 
@@ -485,7 +581,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                     type="text"
                     value={chap.title}
                     onChange={(e) => handleUpdateChapter(idx, 'title', e.target.value)}
-                    placeholder={`Judul Bab ${idx + 1}`}
+                    placeholder={`Judul Bagian ${idx + 1}`}
                     className="font-bold text-xs flex-1 px-3 py-1.5 rounded-lg border outline-none"
                     style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
                   />
@@ -494,7 +590,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                       type="button"
                       onClick={() => handleRemoveChapter(idx)}
                       className="p-1.5 rounded-lg text-red-500 hover:bg-red-500/10 transition-colors"
-                      title="Hapus Bab Ini"
+                      title="Hapus Bagian Ini"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -505,7 +601,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                   rows={4}
                   value={chap.rawText}
                   onChange={(e) => handleUpdateChapter(idx, 'rawText', e.target.value)}
-                  placeholder={`Tuliskan isi teks atau rangkuman untuk bab ${idx + 1}...`}
+                  placeholder={`Tuliskan isi teks atau rangkuman untuk bagian ${idx + 1}...`}
                   className="w-full p-3 rounded-xl border text-xs font-reading-sans leading-relaxed outline-none focus:ring-2 focus:ring-amber-500"
                   style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
                 />
@@ -537,7 +633,7 @@ export const StoryEditorModal: React.FC<StoryEditorModalProps> = ({
                     type="text"
                     value={quizQuestion}
                     onChange={(e) => setQuizQuestion(e.target.value)}
-                    placeholder="mis. Apa inti utama dari materi ini?"
+                    placeholder="mis. Apa pesan kunci dari materi ini?"
                     className="w-full px-3 py-1.5 rounded-lg border text-xs outline-none"
                     style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
                   />

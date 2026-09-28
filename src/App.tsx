@@ -162,6 +162,7 @@ export function App() {
             onDeleteStory={handleDeleteRequest}
             onExportData={exportDataAsJSON}
             onImportData={importDataFromJSON}
+            onDirectAddStoryData={addStory}
             onResetToDefault={resetStoriesToDefault}
           />
         )}

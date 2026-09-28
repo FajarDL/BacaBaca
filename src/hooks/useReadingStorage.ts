@@ -39,6 +39,12 @@ export function useReadingStorage() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge missing initial stories (e.g. newly added RevoU summaries)
+          const existingIds = new Set(parsed.map((s: Story) => s.id));
+          const missingDefaults = INITIAL_STORIES.filter(s => !existingIds.has(s.id));
+          if (missingDefaults.length > 0) {
+            return [...missingDefaults, ...parsed];
+          }
           return parsed;
         }
       }
