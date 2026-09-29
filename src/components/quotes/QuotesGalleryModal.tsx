@@ -57,7 +57,7 @@ export const QuotesGalleryModal: React.FC<QuotesGalleryModalProps> = ({
               <QuoteIcon className="w-12 h-12 mx-auto text-amber-500/40 mb-3" />
               <h3 className="font-semibold text-base mb-1">Belum Ada Kutipan Tersimpan</h3>
               <p className="text-xs max-w-xs mx-auto opacity-75" style={{ color: 'var(--text-secondary)' }}>
-                Saat membaca cerita, Anda dapat menyorot kalimat indah untuk menyimpannya sebagai kartu mutiara kata di sini.
+                Saat membaca materi atau artikel, Anda dapat menyorot kalimat penting untuk menyimpannya sebagai kartu kutipan di sini.
               </p>
             </div>
           ) : (

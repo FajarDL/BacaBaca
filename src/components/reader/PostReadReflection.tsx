@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, CheckCircle2, AlertCircle, ArrowRight, Heart } from 'lucide-react';
+import { Sparkles, CheckCircle2, AlertCircle, ArrowRight, Lightbulb } from 'lucide-react';
 import type { ReflectionQuestion } from '../../types';
 
 interface PostReadReflectionProps {
@@ -27,25 +27,25 @@ export const PostReadReflection: React.FC<PostReadReflectionProps> = ({
 
   return (
     <div 
-      className="mt-12 p-6 sm:p-8 rounded-3xl border shadow-lg space-y-8 animate-in fade-in duration-300"
+      className="mt-12 p-6 sm:p-8 rounded-3xl border shadow-sm space-y-8 animate-in fade-in duration-300"
       style={{
         backgroundColor: 'var(--bg-card)',
         borderColor: 'var(--border-color)',
         color: 'var(--text-primary)'
       }}
     >
-      {/* Moral Lesson Banner */}
+      {/* Rangkuman & Poin Kunci Intisari Banner */}
       {moralLesson && (
-        <div className="p-5 rounded-2xl border text-center space-y-2 relative overflow-hidden"
+        <div className="p-5 sm:p-6 rounded-2xl border text-center space-y-3 relative overflow-hidden"
           style={{
             backgroundColor: 'var(--accent-light)',
             borderColor: 'var(--accent)'
           }}>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/70 text-xs font-bold text-amber-800">
-            <Heart className="w-3.5 h-3.5 fill-amber-700 text-amber-700" />
-            Pesan Makna Cerita
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/85 text-xs font-bold text-amber-800 shadow-xs border border-amber-600/20">
+            <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+            <span>Rangkuman & Poin Kunci Intisari</span>
           </div>
-          <p className="text-base sm:text-lg font-reading-serif italic max-w-xl mx-auto leading-relaxed"
+          <p className="text-base sm:text-[17px] font-reading-serif italic max-w-xl mx-auto leading-relaxed"
             style={{ color: 'var(--text-primary)' }}>
             "{moralLesson}"
           </p>
@@ -56,9 +56,9 @@ export const PostReadReflection: React.FC<PostReadReflectionProps> = ({
       {reflections.length > 0 && (
         <div className="space-y-6">
           <div className="text-center max-w-md mx-auto">
-            <h3 className="text-lg font-bold">Ruang Refleksi & Pemahaman</h3>
+            <h3 className="text-lg font-bold">Ruang Evaluasi & Pemahaman Materi</h3>
             <p className="text-xs opacity-75 mt-1" style={{ color: 'var(--text-secondary)' }}>
-              Mari luangkan sejenak untuk merenungkan makna dari kisah yang baru saja Anda baca.
+              Mari uji pemahaman dan daya serap Anda terhadap materi atau rangkuman yang baru saja dipelajari.
             </p>
           </div>
 
@@ -147,10 +147,10 @@ export const PostReadReflection: React.FC<PostReadReflectionProps> = ({
         style={{ borderColor: 'var(--border-color)' }}>
         <div>
           <h4 className="font-bold text-sm">
-            {isCompleted ? 'Cerita Telah Selesai Dibaca! 🎉' : 'Selesaikan Cerita Ini'}
+            {isCompleted ? 'Materi Selesai Dipelajari! 🎉' : 'Selesaikan & Catat Progres Belajar'}
           </h4>
           <p className="text-xs opacity-75" style={{ color: 'var(--text-secondary)' }}>
-            {isCompleted ? 'Anda telah memperoleh XP dari bacaan ini.' : 'Dapatkan +100 XP dan perbarui riwayat membaca harian Anda.'}
+            {isCompleted ? 'Anda telah memperoleh XP dari materi bacaan ini.' : 'Dapatkan +100 XP dan perbarui riwayat belajar harian Anda.'}
           </p>
         </div>
 
@@ -158,7 +158,7 @@ export const PostReadReflection: React.FC<PostReadReflectionProps> = ({
           {!isCompleted ? (
             <button
               onClick={onComplete}
-              className="flex-1 sm:flex-none px-6 py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:scale-105 transition-all"
+              className="flex-1 sm:flex-none px-6 py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm hover:scale-105 transition-all"
               style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
             >
               <Sparkles className="w-4 h-4" />

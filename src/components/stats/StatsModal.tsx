@@ -114,7 +114,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               <BookOpen className="w-5 h-5 text-emerald-500 mx-auto mb-1" />
               <div className="text-xl font-extrabold">{stats.totalStoriesCompleted}</div>
               <div className="text-[11px] font-medium opacity-75" style={{ color: 'var(--text-secondary)' }}>
-                Cerita Selesai
+                Materi Selesai
               </div>
             </div>
           </div>
