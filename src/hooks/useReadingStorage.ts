@@ -28,7 +28,7 @@ interface UserPreferences {
 const DEFAULT_PREFERENCES: UserPreferences = {
   theme: 'sepia',
   fontFamily: 'serif',
-  fontSize: 'lg'
+  fontSize: 'base'
 };
 
 export function useReadingStorage() {
@@ -70,7 +70,13 @@ export function useReadingStorage() {
     try {
       const stored = localStorage.getItem(PREFS_STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        // Calibrate font size so users get the comfortable 17.5px base standard
+        if (parsed.fontSize === 'lg' && !localStorage.getItem('bacabaca_font_calibrated_v2')) {
+          localStorage.setItem('bacabaca_font_calibrated_v2', 'true');
+          return { ...parsed, fontSize: 'base' };
+        }
+        return parsed;
       }
     } catch (e) {
       console.error('Error loading prefs from localStorage', e);

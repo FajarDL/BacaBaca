@@ -13,10 +13,14 @@ import {
   Upload,
   RotateCcw,
   ShieldCheck,
-  FileText
+  FileText,
+  Brain,
+  User,
+  Compass
 } from 'lucide-react';
 import type { Story, StoryCategory } from '../../types';
 import { parseMarkdownToStory } from '../../utils/markdownParser';
+import { ReadingScienceModal } from '../readingScience/ReadingScienceModal';
 
 interface StoryLibraryProps {
   stories: Story[];
@@ -47,6 +51,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<StoryCategory>('Semua');
+  const [isScienceModalOpen, setIsScienceModalOpen] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const docFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -115,12 +120,14 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-10">
       
-      {/* Welcome Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl p-6 sm:p-10 border shadow-sm transition-all"
+      {/* Editorial Header Banner */}
+      <section 
+        className="relative overflow-hidden rounded-3xl p-6 sm:p-10 border shadow-xs transition-all"
         style={{
-          backgroundColor: 'var(--bg-secondary)',
+          backgroundColor: 'var(--bg-card)',
           borderColor: 'var(--border-color)'
-        }}>
+        }}
+      >
         <div className="max-w-2xl relative z-10 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border"
             style={{
@@ -129,42 +136,27 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
               color: 'var(--accent-hover)'
             }}>
             <Sparkles className="w-3.5 h-3.5" />
-            Ruang Membaca Nyaman untuk Segala Jenis Teks
+            Ruang Baca Mandiri & Belajar Bebas Distraksi
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight"
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight"
             style={{ color: 'var(--text-primary)' }}>
-            Membaca Materi & Rangkuman Jadi Menyenangkan
+            Membaca Lebih Santai, Fokus, & Bermakna
           </h1>
 
-          <p className="text-sm sm:text-base leading-relaxed opacity-80"
+          <p className="text-xs sm:text-sm md:text-base leading-relaxed opacity-85"
             style={{ color: 'var(--text-secondary)' }}>
-            Selamat datang di <strong>BacaBaca</strong>. Masukkan teks apa saja—mulai dari <strong>rangkuman webinar RevoU, modul kursus, artikel, riset, esai, hingga buku</strong>—dan nikmati membacanya dengan suara latar alam penunjang fokus, narasi suara interaktif, serta tema ramah mata.
+            Selamat datang di <strong>BacaBaca</strong>. Masukkan teks apa saja—mulai dari <strong>rangkuman webinar RevoU, modul belajar, artikel riset, esai, hingga buku</strong>. Nikmati membaca dengan tipografi terkalibrasi ilmiah, suara alam penunjang fokus, dan narasi audio interaktif.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            {featuredStory && (
-              <button
-                onClick={() => onSelectStory(featuredStory)}
-                className="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-transform hover:scale-105"
-                style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
-              >
-                <BookOpen className="w-4 h-4" />
-                Mulai Baca Rekomendasi
-              </button>
-            )}
-
+          <div className="flex flex-wrap items-center gap-2.5 pt-2">
             <button
               onClick={onAddNewStory}
-              className="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm border flex items-center gap-1.5 transition-all hover:bg-black/5"
-              style={{
-                borderColor: 'var(--accent)',
-                backgroundColor: 'var(--accent-light)',
-                color: 'var(--text-primary)'
-              }}
+              className="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition-transform hover:scale-102"
+              style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
             >
-              <Plus className="w-4 h-4 text-amber-600" />
-              Tulis Materi Baru
+              <Plus className="w-4 h-4" />
+              Tulis Catatan / Materi
             </button>
 
             <button
@@ -184,34 +176,110 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
             />
 
             <button
-              onClick={onOpenStats}
-              className="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border transition-colors hover:bg-black/5"
-              style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+              onClick={() => setIsScienceModalOpen(true)}
+              className="px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border flex items-center gap-1.5 transition-colors hover:bg-amber-500/10"
+              style={{
+                borderColor: 'var(--accent)',
+                color: 'var(--accent-hover)',
+                backgroundColor: 'var(--accent-light)'
+              }}
+              title="Pelajari riset psikologi & ergonomi membaca menyenangkan"
             >
-              Statistik Membaca
+              <Brain className="w-4 h-4 text-amber-600" />
+              Sains Membaca 🔬
+            </button>
+
+            <button
+              onClick={onOpenStats}
+              className="px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border transition-colors hover:bg-black/5"
+              style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
+            >
+              Statistik Baca
             </button>
           </div>
         </div>
 
-        {/* Decorative Graphic Element */}
-        <div className="absolute right-4 -bottom-6 text-8xl sm:text-9xl opacity-20 pointer-events-none select-none">
+        {/* Subtle Decorative Graphic */}
+        <div className="absolute right-6 -bottom-6 opacity-10 pointer-events-none select-none text-9xl hidden md:block">
           📖
         </div>
       </section>
 
-      {/* Search, Actions & Category Filter Section */}
+      {/* Featured Spotlight Card (If available and not actively searching) */}
+      {featuredStory && !searchQuery && selectedCategory === 'Semua' && (
+        <section 
+          className="rounded-3xl border p-6 sm:p-8 transition-all hover:shadow-md relative overflow-hidden"
+          style={{
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-3 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1">
+                  <Compass className="w-3.5 h-3.5" />
+                  Rekomendasi Bacaan Pilihan
+                </span>
+                <span className="text-xs opacity-50">•</span>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md border"
+                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
+                  {featuredStory.category}
+                </span>
+              </div>
+
+              <h2 
+                onClick={() => onSelectStory(featuredStory)}
+                className="text-xl sm:text-2xl font-bold cursor-pointer hover:text-amber-700 transition-colors leading-snug"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                {featuredStory.title}
+              </h2>
+
+              <p className="text-xs sm:text-sm leading-relaxed opacity-85 line-clamp-2"
+                style={{ color: 'var(--text-secondary)' }}>
+                {featuredStory.summary}
+              </p>
+
+              <div className="flex items-center gap-4 text-xs pt-1 opacity-75"
+                style={{ color: 'var(--text-secondary)' }}>
+                <span className="flex items-center gap-1">
+                  <User className="w-3.5 h-3.5" />
+                  {featuredStory.author}
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" />
+                  {featuredStory.readingTimeMinutes} mnt baca
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => onSelectStory(featuredStory)}
+              className="px-6 py-3 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-transform hover:scale-105 flex-shrink-0"
+              style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
+            >
+              <BookOpen className="w-4 h-4" />
+              Mulai Baca Sekarang
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* Search, Action Tools & Category Filter Section */}
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           
-          {/* Search Box */}
+          {/* Search Input Box */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 opacity-50" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 opacity-40" />
             <input
               type="text"
               placeholder="Cari materi, rangkuman, penulis, atau kata kunci..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm outline-none transition-all focus:ring-2 focus:ring-amber-500"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs sm:text-sm outline-none transition-all focus:ring-2 focus:ring-amber-500"
               style={{
                 backgroundColor: 'var(--bg-card)',
                 borderColor: 'var(--border-color)',
@@ -224,18 +292,18 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onAddNewStory}
-              title="Tulis Materi / Rangkuman Baru"
-              className="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all hover:opacity-90"
+              title="Tulis Catatan / Materi Baru"
+              className="px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all hover:opacity-90"
               style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
             >
               <Plus className="w-4 h-4" />
-              <span>Tambah Teks</span>
+              <span>Tulis</span>
             </button>
 
             <button
               onClick={() => docFileInputRef.current?.click()}
-              title="Impor Dokumen Teks (.md atau .txt)"
-              className="p-2 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
+              title="Impor Dokumen Markdown (.md atau .txt)"
+              className="p-2.5 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
               style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
             >
               <FileText className="w-4 h-4 text-blue-600" />
@@ -244,7 +312,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
             <button
               onClick={onExportData}
               title="Cadangkan / Ekspor Data ke File JSON"
-              className="p-2 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
+              className="p-2.5 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
               style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
             >
               <Download className="w-4 h-4" />
@@ -253,7 +321,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
             <button
               onClick={() => fileInputRef.current?.click()}
               title="Pulihkan / Impor Cadangan Data dari File JSON"
-              className="p-2 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
+              className="p-2.5 rounded-xl border text-xs font-medium hover:bg-black/5 transition-colors"
               style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
             >
               <Upload className="w-4 h-4" />
@@ -268,16 +336,20 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Filter Pills with Item Count */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat;
+            const count = cat === 'Semua' 
+              ? stories.length 
+              : stories.filter(s => s.category === cat).length;
+
             return (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
-                  isSelected ? 'shadow-sm font-bold' : 'opacity-70 hover:opacity-100'
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border flex items-center gap-1.5 ${
+                  isSelected ? 'shadow-xs font-bold' : 'opacity-70 hover:opacity-100'
                 }`}
                 style={{
                   backgroundColor: isSelected ? 'var(--accent)' : 'var(--bg-secondary)',
@@ -285,14 +357,19 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                   color: isSelected ? '#fff' : 'var(--text-primary)'
                 }}
               >
-                {cat}
+                <span>{cat}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-black/5'
+                }`}>
+                  {count}
+                </span>
               </button>
             );
           })}
         </div>
       </section>
 
-      {/* Reading Materials Grid */}
+      {/* Reading Materials Grid (Refined Editorial Cards) */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStories.map((story) => {
           const isCompleted = completedStoryIds.includes(story.id);
@@ -300,34 +377,27 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           return (
             <div
               key={story.id}
-              className="group rounded-2xl border p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg relative overflow-hidden"
+              className="group rounded-2xl border p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden"
               style={{
                 backgroundColor: 'var(--bg-card)',
                 borderColor: 'var(--border-color)'
               }}
             >
-              {/* Card Top */}
-              <div>
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  {/* Emoji Cover badge */}
-                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"
-                    style={{ borderColor: 'var(--border-color)' }}>
+              {/* Card Top Section */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-lg" title={story.category}>
                     {story.coverEmoji}
-                  </div>
+                  </span>
 
                   <div className="flex items-center gap-1.5 flex-wrap justify-end">
                     {isCompleted && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded-full">
                         <CheckCircle2 className="w-3 h-3" />
                         Selesai
                       </span>
                     )}
-                    {story.isCustom && (
-                      <span className="inline-flex items-center text-[10px] font-bold text-amber-700 bg-amber-500/10 px-2 py-0.5 rounded-full">
-                        Kustom
-                      </span>
-                    )}
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border opacity-75"
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border opacity-80"
                       style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
                       {story.category}
                     </span>
@@ -336,31 +406,32 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
 
                 <h3 
                   onClick={() => onSelectStory(story)}
-                  className="font-bold text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-600 transition-colors cursor-pointer"
+                  className="font-bold text-base sm:text-[17px] leading-snug group-hover:text-amber-700 transition-colors cursor-pointer line-clamp-2"
                   style={{ color: 'var(--text-primary)' }}
                 >
                   {story.title}
                 </h3>
 
-                <p className="text-xs opacity-75 font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
-                  Oleh <span className="font-semibold">{story.author}</span>
+                <p className="text-xs opacity-75 font-medium flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
+                  <User className="w-3.5 h-3.5 opacity-60 flex-shrink-0" />
+                  <span className="truncate">{story.author}</span>
                 </p>
 
                 {story.attribution && (
-                  <p className="text-[10px] italic text-amber-800/80 mb-2 truncate">
+                  <p className="text-[10px] italic text-amber-800/80 truncate">
                     ℹ️ {story.attribution}
                   </p>
                 )}
 
-                <p className="text-xs leading-relaxed opacity-80 line-clamp-3 mb-4" style={{ color: 'var(--text-secondary)' }}>
+                <p className="text-xs leading-relaxed opacity-80 line-clamp-3" style={{ color: 'var(--text-secondary)' }}>
                   {story.summary}
                 </p>
               </div>
 
               {/* Card Bottom Meta & Actions */}
-              <div className="pt-4 border-t flex items-center justify-between text-xs"
+              <div className="pt-4 mt-4 border-t flex items-center justify-between text-xs"
                 style={{ borderColor: 'var(--border-color)' }}>
-                <div className="flex items-center gap-1 font-medium opacity-75" style={{ color: 'var(--text-secondary)' }}>
+                <div className="flex items-center gap-1 font-medium opacity-75 text-[11px]" style={{ color: 'var(--text-secondary)' }}>
                   <Clock className="w-3.5 h-3.5" />
                   <span>{story.readingTimeMinutes} mnt baca</span>
                 </div>
@@ -372,7 +443,7 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                       e.stopPropagation();
                       onEditStory(story);
                     }}
-                    title="Edit Materi Ini"
+                    title="Edit Teks Ini"
                     className="p-1.5 rounded-lg border hover:bg-black/5 transition-colors"
                     style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
                   >
@@ -385,17 +456,17 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
                       e.stopPropagation();
                       onDeleteStory(story);
                     }}
-                    title="Hapus Materi Ini"
+                    title="Hapus Teks Ini"
                     className="p-1.5 rounded-lg border hover:bg-red-500/10 hover:text-red-600 transition-colors"
                     style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Read Action */}
+                  {/* Read Action Button */}
                   <button
                     onClick={() => onSelectStory(story)}
-                    className="inline-flex items-center gap-1 font-bold text-amber-600 pl-1 group-hover:translate-x-1 transition-transform"
+                    className="inline-flex items-center gap-1 font-bold text-amber-700 pl-1 group-hover:translate-x-0.5 transition-transform text-xs"
                   >
                     <span>Baca</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -408,22 +479,33 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
       </section>
 
       {/* Ethical & Copyright Compliance Notice Banner */}
-      <section className="p-5 rounded-2xl border text-xs space-y-2"
+      <section className="p-5 rounded-2xl border text-xs space-y-2.5"
         style={{
           backgroundColor: 'var(--bg-secondary)',
           borderColor: 'var(--border-color)',
           color: 'var(--text-secondary)'
         }}>
-        <div className="flex items-center gap-2 font-bold text-amber-700">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          Komitmen Etika & Kepatuhan Hak Cipta
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2 font-bold text-amber-800">
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <span>Kaidah Etika Belajar & Kepatuhan Hak Cipta (*Fair Use*)</span>
+          </div>
+
+          <button
+            onClick={() => setIsScienceModalOpen(true)}
+            className="text-xs text-amber-700 font-semibold hover:underline flex items-center gap-1"
+          >
+            <Brain className="w-3.5 h-3.5" />
+            Baca Panduan Sains Membaca
+          </button>
         </div>
-        <p className="leading-relaxed opacity-85">
-          Proyek <strong>BacaBaca</strong> menghargai integritas akademik dan hak cipta. Seluruh catatan, rangkuman webinar, modul kursus, dan materi yang dibuat atau diimpor di platform ini disimpan secara lokal di perangkat pribadi Anda untuk tujuan <em>personal study</em> / studi mandiri (*Fair Use*). Kami mengimbau seluruh pengguna untuk menyusun rangkuman menggunakan kalimat hasil pemahaman sendiri (parafrase) dan menyertakan atribusi sumber materi secara jujur dan transparan.
+
+        <p className="leading-relaxed opacity-85 text-xs">
+          Proyek <strong>BacaBaca</strong> dirancang untuk mendukung studi mandiri (*personal study / Fair Use*). Seluruh data catatan, modul, dan rangkuman webinar tersimpan privat di perangkat lokal Anda. Kami mendorong pengguna untuk merangkum dengan parafrase bahasa sendiri dan menyertakan atribusi sumber materi secara jujur.
         </p>
 
         <div className="pt-2 flex items-center justify-between border-t border-black/5 text-[11px]">
-          <span>Data tersimpan secara privat di peramban lokal Anda.</span>
+          <span>Data tersimpan secara lokal di peramban Anda.</span>
           <button
             onClick={onResetToDefault}
             className="flex items-center gap-1 text-amber-700 hover:underline"
@@ -445,6 +527,12 @@ export const StoryLibrary: React.FC<StoryLibraryProps> = ({
           © {new Date().getFullYear()} BacaBaca • Ruang Membaca Nyaman untuk Segala Hal
         </p>
       </footer>
+
+      {/* Reading Science Guide Modal */}
+      <ReadingScienceModal
+        isOpen={isScienceModalOpen}
+        onClose={() => setIsScienceModalOpen(false)}
+      />
 
     </div>
   );
